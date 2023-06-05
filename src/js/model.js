@@ -1,4 +1,6 @@
 import { async } from "regenerator-runtime";
+import { API_URL } from "./config.js";
+import { getJSON } from "./helpers.js";
 
 export const state = {
   recipe: {},
@@ -6,13 +8,7 @@ export const state = {
 
 export const loadRecipe = async function (id) {
   try {
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-      // "https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bcd07"
-    );
-    const data = await res.json(); // converting from json returned data from fetch
-    console.log(res, data);
-    if (!res.ok) throw new Error(`${data.message} ${res.status}`); // here we creating custom Error that then catch in catch block
+    const data = await getJSON(`${API_URL}/${id}`);
     const { recipe } = data.data;
     // here we create custom object with formatted property names instead of default one that were returned from fetch request
     state.recipe = {
@@ -27,6 +23,7 @@ export const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (err) {
-    alert(err);
+    // Temp custom error
+    console.error(`${err} !!!!`);
   }
 };
