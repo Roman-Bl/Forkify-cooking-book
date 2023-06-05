@@ -586,10 +586,10 @@ const controlRecipes = async function() {
 // window.addEventListener("hashchange", controlRecipes);
 // window.addEventListener("load", controlRecipes);
 // instead of writing it two times we can optimise the code:
-[
-    "hashchange",
-    "load"
-].forEach((ev)=>window.addEventListener(ev, controlRecipes));
+const init = function() {
+    (0, _recipeViewJsDefault.default).addRendererHandler(controlRecipes);
+};
+init();
 
 },{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeView.js":"l60JC"}],"gSXXb":[function(require,module,exports) {
 var global = require("ce88ae4a7e7a2dc4");
@@ -2699,6 +2699,12 @@ class RecipeView {
         this.#clear();
         // console.log(markup);
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    addRendererHandler(handler) {
+        [
+            "hashchange",
+            "load"
+        ].forEach((ev)=>window.addEventListener(ev, handler));
     }
     #generateMarkup() {
         return `
