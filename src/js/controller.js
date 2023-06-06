@@ -23,7 +23,8 @@ const controlRecipes = async function () {
     // 2) Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
-    console.log(err);
+    console.log(err, " - from controller!!!");
+    recipeView.renderError();
   }
 };
 
@@ -32,6 +33,6 @@ const controlRecipes = async function () {
 // window.addEventListener("load", controlRecipes);
 // instead of writing it two times we can optimise the code:
 const init = function () {
-  recipeView.addRendererHandler(controlRecipes);
+  recipeView.addHandlerRender(controlRecipes);
 };
 init();

@@ -579,7 +579,8 @@ const controlRecipes = async function() {
         // 2) Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
-        console.log(err);
+        console.log(err, " - from controller!!!");
+        (0, _recipeViewJsDefault.default).renderError();
     }
 };
 // controlRecipes();
@@ -587,7 +588,7 @@ const controlRecipes = async function() {
 // window.addEventListener("load", controlRecipes);
 // instead of writing it two times we can optimise the code:
 const init = function() {
-    (0, _recipeViewJsDefault.default).addRendererHandler(controlRecipes);
+    (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
 };
 init();
 
@@ -2630,7 +2631,8 @@ const loadRecipe = async function(id) {
         console.log(state.recipe);
     } catch (err) {
         // Temp custom error
-        console.error(`${err} !!!!`);
+        // console.error(`${err} from model!!!!`);
+        throw err;
     }
 };
 
@@ -2679,6 +2681,8 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentElement = document.querySelector(".recipe");
     #data;
+    #errorMessage = "We could not find that recepi. Please try another one!";
+    #message = "";
     render(data) {
         this.#data = data;
         const markup = this.#generateMarkup();
@@ -2700,7 +2704,21 @@ class RecipeView {
         // console.log(markup);
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
     }
-    addRendererHandler(handler) {
+    renderError() {
+        const markup = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${this.#errorMessage}</p>
+      </div>
+    `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    addHandlerRender(handler) {
         [
             "hashchange",
             "load"
