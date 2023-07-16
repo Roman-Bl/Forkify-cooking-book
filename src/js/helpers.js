@@ -13,7 +13,6 @@ export const getJSON = async function (url) {
   try {
     const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]); // win the race either fetch or timeout
     const data = await res.json(); // converting from json returned data from fetch
-    //   console.log(res, data);
     if (!res.ok) throw new Error(`${data.message} ${res.status}`); // here we creating custom Error that then catch in catch block
     return data;
   } catch (err) {

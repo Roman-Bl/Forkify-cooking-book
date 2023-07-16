@@ -3,20 +3,21 @@ import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultView from "./views/resultView.js";
+import paginationView from "./views/paginationView.js";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 ///////////////////////////////////////
 
 // console.log("Test");
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1); // taking hash of the page
-    console.log(id);
+    // console.log(id);
     recipeView.renderSpinner();
     // 1) Loading recipe
     await model.loadRecipe(id); // updating the state
@@ -37,19 +38,26 @@ const controlSearchResults = async function () {
     // 2) Loading search result
     await model.loadSearchResults(query);
     // 3) Rendering search res
-    // console.log(model.state.search);
-    resultView.render(model.state.search.results);
+    // resultView.render(model.state.search.results); // all res
+    resultView.render(model.getSearchResultsPage()); // only per_page_res
+    // 4) Render pagination btns
+    paginationView.render(model.state.search);
   } catch (err) {
     console.log(err);
   }
 };
-// controlSearchResults();
-// controlRecipes();
-// window.addEventListener("hashchange", controlRecipes);
-// window.addEventListener("load", controlRecipes);
-// instead of writing it two times we can optimise the code:
+
+const controlPagination = function (goTo) {
+  console.log("Pagination control ", goTo);
+  // 1) Rendering NEW search res
+  resultView.render(model.getSearchResultsPage(goTo));
+  // 2) Render NEW pagination btns
+  paginationView.render(model.state.search);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerPagination(controlPagination); // temp comment
 };
 init();
