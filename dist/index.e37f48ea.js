@@ -581,6 +581,8 @@ const controlRecipes = async function() {
         const id = window.location.hash.slice(1); // taking hash of the page
         // console.log(id);
         (0, _recipeViewJsDefault.default).renderSpinner();
+        // 0) Update result view to markup selected search result
+        (0, _resultViewJsDefault.default).update(_modelJs.getSearchResultsPage());
         // 1) Loading recipe
         await _modelJs.loadRecipe(id); // updating the state
         // 2) Rendering recipe
@@ -617,7 +619,8 @@ const controlServings = function(newServings) {
     // Updating the state
     _modelJs.updateServings(newServings);
     // Update recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -3174,6 +3177,31 @@ class View {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
+    update(data) {
+        // guard block
+        // if (!data || (Array.isArray(data) && data.length === 0))
+        //   return this.renderError();
+        this._data = data;
+        // 1) creating Markup with new/changed data
+        const newMarkup = this._generateMarkup();
+        // 2) creating virtual(like real but not on the page) DOM element
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        // 3) Transforming Node list af all elements into real array
+        const newElements = Array.from(newDOM.querySelectorAll("*")); // for new Virtual DOM
+        const curElements = Array.from(this._parentElement.querySelectorAll("*")); // for current real DOM
+        // console.log(newElements, curElements);
+        // 4) Itarate and Compare in what Node we have different text and UPDATE TEXT in current DOM
+        // isEqualNode - it could be not exactly the same node, but the CONTENT should be the same
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            // console.log(curEl, newEl.isEqualNode(curEl));
+            // Here we have second condition to select only those Nodes that contain only TEXT
+            // because Parent Node also will not be equal if there is a change in child el. But we don`t want to change whole parent container
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") curEl.textContent = newEl.textContent;
+            // 5) Iterate through El attributes and UPDATE only attributes
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+        });
+    }
     _clear() {
         this._parentElement.innerHTML = "";
     }
@@ -3244,10 +3272,12 @@ class ResultView extends (0, _viewJsDefault.default) {
         return this._data.map((res)=>this._generateMarkupPreview(res)).join("");
     // return this._data.map(this._generateMarkupPreview).join("");
     }
+    // Method to create separate priview for one recipe
     _generateMarkupPreview(res) {
+        const id = document.location.hash.slice(1);
         return `
     <li class="preview">
-        <a class="preview__link" href="#${res.id}">
+        <a class="preview__link ${id === res.id ? "preview__link--active" : ""}" href="#${res.id}">
         <figure class="preview__fig">
             <img src="${res.image}" alt="${res.title}" />
         </figure>
@@ -3302,7 +3332,7 @@ class PaginationView extends (0, _viewJsDefault.default) {
           <svg class="search__icon">
           <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
           </svg>
-          <span>Page ${curPage}</span>
+          <span>Page ${curPage - 1}</span>
       </button>
       `;
         // return `last page`;

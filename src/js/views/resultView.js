@@ -10,10 +10,14 @@ class ResultView extends View {
     return this._data.map((res) => this._generateMarkupPreview(res)).join("");
     // return this._data.map(this._generateMarkupPreview).join("");
   }
+  // Method to create separate priview for one recipe
   _generateMarkupPreview(res) {
+    const id = document.location.hash.slice(1);
     return `
     <li class="preview">
-        <a class="preview__link" href="#${res.id}">
+        <a class="preview__link ${
+          id === res.id ? "preview__link--active" : ""
+        }" href="#${res.id}">
         <figure class="preview__fig">
             <img src="${res.image}" alt="${res.title}" />
         </figure>

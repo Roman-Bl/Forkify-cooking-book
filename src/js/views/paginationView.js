@@ -43,7 +43,7 @@ class PaginationView extends View {
           <svg class="search__icon">
           <use href="${icons}#icon-arrow-left"></use>
           </svg>
-          <span>Page ${curPage}</span>
+          <span>Page ${curPage - 1}</span>
       </button>
       `;
     // return `last page`;
