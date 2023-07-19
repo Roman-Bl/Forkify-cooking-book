@@ -12,6 +12,17 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
+  // Alternative
+  // render(data, render = true) {
+  //   // guard block
+  //   if (!data || (Array.isArray(data) && data.length === 0))
+  //     return this.renderError();
+  //   this._data = data;
+  //   const markup = this._generateMarkup();
+  //   if (!render) return markup;
+  //   this._clear();
+  //   this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  // }
 
   update(data) {
     // guard block
