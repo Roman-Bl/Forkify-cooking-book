@@ -1,4 +1,6 @@
 node_modules/
+dist
+.parcel-cache
 .DS_Store
 src/.DS_Store
 Project 7 - Forkify-App.code-workspace
