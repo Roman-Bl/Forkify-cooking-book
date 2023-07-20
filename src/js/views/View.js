@@ -3,6 +3,15 @@ import icons from "url:../../img/icons.svg"; // for Parcel v2
 export default class View {
   #message = "test_inherit";
   _data;
+  /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @returns {undefined}
+   * @this {Object} View instance
+   * @author Roman Blinov
+   * @todo Finish Implementation
+   */
+
   render(data) {
     // guard block
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -74,7 +83,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
-  renderError() {
+  renderError(message = this._errorMessage) {
     const markup = `
       <div class="error">
         <div>
@@ -82,7 +91,21 @@ export default class View {
             <use href="${icons}#icon-alert-triangle"></use>
           </svg>
         </div>
-        <p>${this._errorMessage}</p>
+        <p>${message}</p>
+      </div>
+    `;
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+  renderMessage(message = this._message) {
+    const markup = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${icons}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
       </div>
     `;
     this._clear();

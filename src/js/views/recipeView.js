@@ -8,9 +8,12 @@ class RecipeView extends View {
   _message = "";
 
   addHandlerRender(handler) {
-    ["hashchange", "load"].forEach((ev) =>
-      window.addEventListener(ev, handler)
-    );
+    ["hashchange", "load"].forEach((ev) => {
+      // const id = window.location.hash.slice(1);
+      // console.log(id);
+      // if (!id) return;
+      window.addEventListener(ev, handler);
+    });
   }
 
   addHandlerAddBookmark(handler) {
@@ -80,8 +83,10 @@ class RecipeView extends View {
         </div>
       </div>
 
-      <div class="recipe__user-generated">
-
+      <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
+        <svg>
+          <use href="${icons}#icon-user"></use>
+        </svg>
       </div>
       <button class="btn--round btn--bookmark">
         <svg class="">
