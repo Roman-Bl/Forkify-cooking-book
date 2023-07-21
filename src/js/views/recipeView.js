@@ -1,6 +1,7 @@
 import icons from "url:../../img/icons.svg"; // for Parcel v2
-import { Fraction } from "fractional";
 import View from "./View.js";
+// import { Fraction } from "fractional";
+const Fraction = require("fractional").Fraction;
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
@@ -9,9 +10,6 @@ class RecipeView extends View {
 
   addHandlerRender(handler) {
     ["hashchange", "load"].forEach((ev) => {
-      // const id = window.location.hash.slice(1);
-      // console.log(id);
-      // if (!id) return;
       window.addEventListener(ev, handler);
     });
   }
@@ -28,9 +26,9 @@ class RecipeView extends View {
     this._parentElement.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
       if (!btn) return;
-      // console.log(btn);
+      console.log(btn);
       const updateTo = +btn.dataset.updateTo;
-      // console.log(updateTo);
+      console.log(updateTo);
       if (updateTo > 0) handler(updateTo);
     });
   }
