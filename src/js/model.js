@@ -38,7 +38,7 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (err) {
     // Temp custom error
     // console.error(`${err} from model!!!!`);
@@ -63,7 +63,7 @@ export const loadSearchResults = async function (query) {
     });
     state.search.page = 1; // reset page on new search;
   } catch (err) {
-    console.error(`${err} from model!!!!`);
+    // console.error(`${err} from model!!!!`);
     throw err;
   }
 };
@@ -135,7 +135,7 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
-    console.log(data);
+    // console.log(data);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (err) {
