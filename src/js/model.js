@@ -1,4 +1,3 @@
-import { async } from "regenerator-runtime";
 import { API_URL, RES_PER_PAGE, KEY } from "./config.js";
 import { AJAX } from "./helpers.js";
 import { getJSON, sendJSON } from "./helpers.js";
@@ -38,10 +37,10 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (err) {
     // Temp custom error
-    console.error(`${err} from model!!!!`);
+    // console.error(`${err} from model!!!!`);
     throw err;
   }
 };
@@ -50,7 +49,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
-    console.log(data);
+    // console.log(data);
     const { recipes } = data.data;
     state.search.results = recipes.map((res) => {
       return {
@@ -70,7 +69,7 @@ export const loadSearchResults = async function (query) {
 
 export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = page;
-  console.log(`res per page- `, state.search.resultsPerPage);
+  // console.log(`res per page- `, state.search.resultsPerPage);
   const start = (page - 1) * state.search.resultsPerPage; // 0;
   const end = page * state.search.resultsPerPage; // slice not include last el, so number 10 will give from 0 to 9;
   return state.search.results.slice(start, end);
@@ -135,7 +134,7 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
-    console.log(data);
+    // console.log(data);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (err) {
@@ -145,9 +144,9 @@ export const uploadRecipe = async function (newRecipe) {
 
 const init = function () {
   const data = JSON.parse(localStorage.getItem("bookmarks"));
-  console.log(data);
+  // console.log(data);
   if (data) state.bookmarks = data;
-  console.log("state after load form localStor - ", state.bookmarks);
+  // console.log("state after load form localStor - ", state.bookmarks);
 };
 
 init();

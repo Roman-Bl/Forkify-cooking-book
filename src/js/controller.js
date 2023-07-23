@@ -1,4 +1,3 @@
-import { async } from "regenerator-runtime";
 import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
@@ -7,20 +6,16 @@ import paginationView from "./views/paginationView.js";
 import bookmarkView from "./views/bookmarkView.js";
 import addRecipeView from "./views/addRecipeView.js";
 import { MODAL_WINDOW_CLOSE_SEC } from "./config.js";
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 ///////////////////////////////////////
 
-// console.log("Test");
-// if (module.hot) {
-//   module.hot.accept();
-// }
-
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1); // taking hash of the page
-    console.log(id);
+    // console.log(id);
     if (!id) return;
 
     recipeView.renderSpinner();
@@ -32,7 +27,7 @@ const controlRecipes = async function () {
     // 2) Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
-    console.log(err, " - from controller!!!");
+    // console.log(err, " - from controller!!!");
     recipeView.renderError();
   }
 };
@@ -77,8 +72,8 @@ const controlBookmarks = function () {
 const controlAddBookmark = function () {
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
-  console.log(model.state.recipe);
-  console.log(model.state.bookmarks);
+  // console.log(model.state.recipe);
+  // console.log(model.state.bookmarks);
   recipeView.update(model.state.recipe);
   bookmarkView.render(model.state.bookmarks);
 };
@@ -89,7 +84,7 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderSpinner();
     // Uploading recipe
     await model.uploadRecipe(newRecipe);
-    console.log(model.state.recipe);
+    // console.log(model.state.recipe);
     // Render recipe and bookmark
     recipeView.render(model.state.recipe);
     bookmarkView.render(model.state.bookmarks);

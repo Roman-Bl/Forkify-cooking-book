@@ -1,7 +1,8 @@
 import icons from "url:../../img/icons.svg"; // for Parcel v2
 import View from "./View.js";
 // import { Fraction } from "fractional";
-const Fraction = require("fractional").Fraction;
+// const Fraction = require("fractional");
+import { Fraction } from "fraction.js";
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
@@ -26,9 +27,9 @@ class RecipeView extends View {
     this._parentElement.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
       if (!btn) return;
-      console.log(btn);
+      // console.log(btn);
       const updateTo = +btn.dataset.updateTo;
-      console.log(updateTo);
+      // console.log(updateTo);
       if (updateTo > 0) handler(updateTo);
     });
   }
@@ -118,21 +119,23 @@ class RecipeView extends View {
       >
         <span>Directions</span>
         <svg class="search__icon">
-          <use href="src/img/icons.svg#icon-arrow-right"></use>
+          <use href="${icons}#icon-arrow-right"></use>
         </svg>
       </a>
     </div>
     `;
   }
   _generateMarkupIngredients(ing) {
+    const ingFractioned = new Fraction(+ing.quantity);
+    // console.log(typeof ingFractioned.toFraction(true));
     return `
       <li class="recipe__ingredient">
         <svg class="recipe__icon">
           <use href="${icons}#icon-check"></use>
         </svg>
-        <div class="recipe__quantity">${
-          ing.quantity ? new Fraction(ing.quantity).toString() : ""
-        }</div>
+        <div class="recipe__quantity">
+        ${ing.quantity ? ingFractioned.toFraction(true) : ""}
+          </div>
         <div class="recipe__description">
           <span class="recipe__unit">${ing.unit}</span>
           ${ing.description}
@@ -141,5 +144,7 @@ class RecipeView extends View {
       `;
   }
 }
+// var x = new Fraction(1.88);
+// var res = x.toFraction(true); // String "1 22/25"
 
 export default new RecipeView();

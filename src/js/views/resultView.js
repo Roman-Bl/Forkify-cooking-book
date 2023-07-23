@@ -7,7 +7,7 @@ class ResultView extends View {
   _parentElement = document.querySelector(".results");
   _errorMessage = "No recipe for this query. Please try again ;)";
   _generateMarkup() {
-    console.log(this._data);
+    // console.log(this._data);
     return this._data.map((res) => previewView._generateMarkup(res)).join("");
   }
   // // Alternative

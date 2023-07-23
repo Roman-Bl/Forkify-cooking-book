@@ -34,9 +34,6 @@ export default class View {
   // }
 
   update(data) {
-    // guard block
-    // if (!data || (Array.isArray(data) && data.length === 0))
-    //   return this.renderError();
     this._data = data;
     // 1) creating Markup with new/changed data
     const newMarkup = this._generateMarkup();
